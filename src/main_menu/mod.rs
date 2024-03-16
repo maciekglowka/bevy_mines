@@ -5,7 +5,11 @@ use crate::states::MainState;
 pub struct MainMenuPlugin;
 impl Plugin for MainMenuPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(MainState::MainMenu), draw_dummy_text);
+        app.add_systems(OnEnter(MainState::MainMenu), draw_dummy_text)
+            .add_systems(Update, (
+                handle_input
+            ).run_if(in_state(MainState::MainMenu)))
+            .add_systems(OnExit(MainState::MainMenu), clear_dummy_text);
     }
 }
 
@@ -13,7 +17,6 @@ fn draw_dummy_text(
     mut commands: Commands,
     assets: Res<crate::assets::GraphicsAssets>
 ) {
-    println!("Text");
     let style = TextStyle {
         font: assets.font.clone(),
         font_size: 32.,
@@ -29,4 +32,22 @@ fn draw_dummy_text(
             ..Default::default()
         }
     );
+}
+
+fn handle_input(
+    mut ev: EventReader<bevy::input::keyboard::KeyboardInput>,
+    mut state: ResMut<NextState<MainState>>
+) {
+    for _ in ev.read() {
+        state.set(MainState::Game);
+    }
+}
+
+fn clear_dummy_text(
+    mut commands: Commands,
+    query: Query<Entity, With<Text>>
+) {
+    for entity in query.iter() {
+        commands.entity(entity).despawn();
+    }
 }

@@ -4,30 +4,42 @@ use bevy::{
 };
 
 mod assets;
+mod board;
+mod globals;
+mod graphics;
 mod main_menu;
 mod states;
 
 #[bevy_main]
 fn main() {
+    #[cfg(target_os = "android")]
+    let window_plugin = WindowPlugin {
+        primary_window: Some(Window {
+            resizable: false,
+            mode: WindowMode::BorderlessFullscreen,
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+    #[cfg(not(target_os = "android"))]
+    let window_plugin = WindowPlugin::default();
+
     App::new()
         .insert_resource(ClearColor(Color::rgb(0.75, 0.25, 0.5)))
         .add_plugins(DefaultPlugins.set(
                 ImagePlugin::default_nearest()
             )
-            // .set(WindowPlugin {
-            //     primary_window: Some(Window {
-            //         resizable: false,
-            //         mode: WindowMode::BorderlessFullscreen,
-            //         ..Default::default()
-            //     }),
-            //     ..Default::default()
-            // })
+            .set(window_plugin)
         )
         .insert_resource(Msaa::Off)
         .insert_state(states::MainState::MainMenu)
         .add_systems(Startup, setup)
         .add_systems(Startup, assets::load_assets)
-        .add_plugins(main_menu::MainMenuPlugin)
+        .add_plugins((
+            main_menu::MainMenuPlugin,
+            board::BoardPlugin,
+            graphics::GraphicsPlugin
+        ))
         // .add_systems(Update, frames)
         .run();
 }
@@ -48,10 +60,17 @@ fn main() {
 //     }
 // }
 
-fn setup(mut commands: Commands, mut state: ResMut<NextState<states::MainState>>) {
-    commands.spawn(Camera2dBundle::default());
+fn setup(mut commands: Commands) {
+    let c = 0.5 * globals::BOARD_SIZE as f32 * globals::TILE_SIZE;
+    commands.spawn(
+        Camera2dBundle {
+            transform: Transform::from_translation(
+                Vec3::new(c, c, 1.)
+            ),
+            ..Default::default()
+        }
+    );
     commands.spawn(FrameTimer(Timer::from_seconds(0.1, TimerMode::Repeating)));
-    // state.set(states::MainState::MainMenu);
 }
 
 #[derive(Component)]

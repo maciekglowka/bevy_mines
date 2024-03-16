@@ -308,13 +308,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_android_mines"
-version = "0.1.0"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "bevy_animation"
 version = "0.13.0"
 source = "git+https://github.com/bevyengine/bevy.git?branch=release-0.13.1#d2e794f112b40a44498ee867fa78cdae88c49790"
@@ -688,6 +681,13 @@ version = "0.13.0"
 source = "git+https://github.com/bevyengine/bevy.git?branch=release-0.13.1#d2e794f112b40a44498ee867fa78cdae88c49790"
 dependencies = [
  "glam",
+]
+
+[[package]]
+name = "bevy_mines"
+version = "0.1.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]
