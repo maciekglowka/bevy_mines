@@ -33,3 +33,4 @@ opt-level = 3
 [dependencies]
 # bevy = "0.13"
 bevy = { git = "https://github.com/bevyengine/bevy.git", branch = "release-0.13.1" }
+rand = "0.8"
