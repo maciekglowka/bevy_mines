@@ -61,12 +61,12 @@ fn main() {
 // }
 
 fn setup(mut commands: Commands) {
-    let c = 0.5 * globals::BOARD_SIZE as f32 * globals::TILE_SIZE;
+    // let c = 0.5 * globals::BOARD_SIZE as f32 * globals::TILE_SIZE;
     commands.spawn(
         Camera2dBundle {
-            transform: Transform::from_translation(
-                Vec3::new(c, c, 1.)
-            ),
+            // transform: Transform::from_translation(
+            //     Vec3::new(c, c, 1.)
+            // ),
             ..Default::default()
         }
     );

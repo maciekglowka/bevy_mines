@@ -35,10 +35,10 @@ fn draw_dummy_text(
 }
 
 fn handle_input(
-    mut ev: EventReader<bevy::input::keyboard::KeyboardInput>,
+    mouse_buttons: Res<ButtonInput<MouseButton>>,
     mut state: ResMut<NextState<MainState>>
 ) {
-    for _ in ev.read() {
+    if mouse_buttons.just_pressed(MouseButton::Left) {
         state.set(MainState::Game);
     }
 }
