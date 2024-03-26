@@ -36,11 +36,14 @@ fn draw_dummy_text(
 
 fn handle_input(
     mouse_buttons: Res<ButtonInput<MouseButton>>,
-    mut state: ResMut<NextState<MainState>>
+    mut state: ResMut<NextState<MainState>>,
+    touches: Res<Touches>
 ) {
-    if mouse_buttons.just_pressed(MouseButton::Left) {
+    if mouse_buttons.just_pressed(MouseButton::Left) || touches.any_just_pressed() {
+        info!("BEVY: MainMenu");
         state.set(MainState::Game);
     }
+
 }
 
 fn clear_dummy_text(
